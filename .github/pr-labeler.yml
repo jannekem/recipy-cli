@@ -1,0 +1,11 @@
+# Match PR branches to labels
+"type: feature":
+  - "feature/*"
+  - "feat/*"
+"type: fix":
+  - "fix/*"
+"type: chore":
+  - "chore/*"
+  - "ci/*"
+"type: docs":
+  - "docs/*"
