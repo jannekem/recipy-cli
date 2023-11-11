@@ -3,13 +3,10 @@ tag-template: "v$RESOLVED_VERSION"
 version-resolver:
   major:
     labels:
-      - "major"
+      - "breaking"
   minor:
     labels:
-      - "minor"
-  patch:
-    labels:
-      - "patch"
+      - "type: feature"
   default: patch
 template:
   ## What's changed

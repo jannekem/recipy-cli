@@ -1,0 +1,3 @@
+# Match PR files to labels
+"type: docs":
+  - "**/*.md"
