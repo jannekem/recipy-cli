@@ -4,7 +4,8 @@ use clap::Parser;
 #[clap(name = env!("CARGO_PKG_NAME"), version = env!("CARGO_PKG_VERSION"))]
 pub struct Cli {
     /// The URL to fetch
-    pub url: String,
+    #[clap(required_unless_present = "init")]
+    pub url: Option<String>,
 
     /// Filename
     #[clap(short, long)]
@@ -22,7 +23,11 @@ pub struct Cli {
     #[clap(long)]
     pub temperature: Option<String>,
 
-    /// Print to stdout
+    /// Print recipe to stdout
     #[clap(long)]
     pub stdout: bool,
+
+    /// Initialize directory structure
+    #[clap(long)]
+    pub init: bool,
 }

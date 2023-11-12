@@ -4,13 +4,19 @@ use anyhow::{Context, Result};
 use clap::Parser;
 
 mod cli;
+mod init;
 mod parser;
 mod writer;
 use cli::Cli;
 
 fn main() -> Result<()> {
     let args = Cli::parse();
-    let body = reqwest::blocking::get(&args.url)
+
+    if args.init {
+        return init::init();
+    }
+
+    let body = reqwest::blocking::get(&args.url.unwrap())
         .context("Failed to fetch URL")?
         .text()?;
     let mut recipe = parser::parse_recipe(&body)?;
@@ -35,7 +41,8 @@ fn main() -> Result<()> {
             Err(e) => {
                 if e.kind() == std::io::ErrorKind::AlreadyExists {
                     return Err(anyhow::anyhow!(
-                        "Recipe already exists, use --force to overwrite."
+                        "Recipe file '{}' already exists, use --force to overwrite.",
+                        &file_path
                     ));
                 }
                 return Err(anyhow::anyhow!("Could not create the recipe file. Make sure that this is a Hugo project with a content/recipe directory."));
@@ -44,5 +51,6 @@ fn main() -> Result<()> {
     };
 
     writer::write_recipe(&recipe, &mut output).context("Failed to write recipe.")?;
+    println!("Added recipe {}", &recipe.title);
     Ok(())
 }

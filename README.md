@@ -14,6 +14,10 @@ Alternatively, you can build the binary from source by cloning this repository, 
 
 Run `recipy-cli --help` to see the available commands and options. The utility requires a Recipy site to be present in the current directory. Attempting to run the utility in a directory without the required directory structure will result in an error.
 
+### Initializing a Recipy site
+
+In order to import recipes, you need to have the proper directory structure in place. You can initialize the required content directories by running `recipy-cli --init`.
+
 ### Importing a recipe
 
 To import a recipe, you can simply run `recipy-cli <URL>`. The utility will attempt to download the recipe from the given URL and import it into your Recipy site. Check the help for more options to customize the import.
