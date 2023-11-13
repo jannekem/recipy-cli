@@ -9,8 +9,20 @@ mod parser;
 mod writer;
 use cli::Cli;
 
-fn main() -> Result<()> {
+fn main() {
+    if let Err(e) = run() {
+        log::error!("{}", e);
+        std::process::exit(1);
+    }
+}
+
+fn run() -> Result<()> {
     let args = Cli::parse();
+    stderrlog::new()
+        .module(module_path!())
+        .verbosity(log::Level::Info)
+        .init()
+        .unwrap();
 
     if args.init {
         return init::init();
@@ -51,6 +63,6 @@ fn main() -> Result<()> {
     };
 
     writer::write_recipe(&recipe, &mut output).context("Failed to write recipe.")?;
-    println!("Added recipe {}", &recipe.title);
+    log::info!("Added recipe {}", &recipe.title);
     Ok(())
 }
