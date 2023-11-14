@@ -45,6 +45,7 @@ fn run() -> Result<()> {
         );
         let file = OpenOptions::new()
             .write(true)
+            .truncate(true)
             .create(args.force)
             .create_new(!args.force)
             .open(&file_path);
