@@ -10,6 +10,7 @@ pub struct Recipe {
     pub preptime: String,
     pub instructions: Vec<String>,
     pub ingredients: Vec<String>,
+    pub categories: Vec<String>,
     pub image: String,
     pub favorite: bool,
     pub temperature: String,
@@ -41,25 +42,32 @@ impl Recipe {
             .as_array()
             .unwrap_or(&Vec::new())
             .iter()
-            .map(|i| i["text"].as_str().unwrap_or_default().to_string())
+            .map(|i| i["text"].as_str().unwrap_or_default().to_owned())
             .collect();
         let ingredients = json["recipeIngredient"]
             .as_array()
             .unwrap_or(&Vec::new())
             .iter()
-            .map(|i| i.as_str().unwrap_or_default().to_string())
+            .map(|i| i.as_str().unwrap_or_default().to_owned())
+            .collect();
+        let categories: Vec<String> = json["recipeCategory"]
+            .as_array()
+            .unwrap_or(&Vec::new())
+            .iter()
+            .map(|i| i.as_str().unwrap_or_default().to_owned())
             .collect();
 
         Ok(Recipe {
-            title: title.to_string(),
-            date: date.to_string(),
-            description: description.to_string(),
+            title: title.to_owned(),
+            date: date.to_owned(),
+            description: description.to_owned(),
             preptime: format_preptime(preptime),
-            instructions: instructions,
+            instructions,
             ingredients,
-            image: "".to_string(),
+            categories,
+            image: "".to_owned(),
             favorite: false,
-            temperature: "".to_string(),
+            temperature: "".to_owned(),
         })
     }
 
@@ -83,5 +91,5 @@ fn format_preptime(preptime: &str) -> String {
             _ => output.push(c),
         }
     }
-    output.trim().to_string()
+    output.trim().to_owned()
 }
