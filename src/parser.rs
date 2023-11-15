@@ -42,7 +42,11 @@ impl Recipe {
             .as_array()
             .unwrap_or(&Vec::new())
             .iter()
-            .map(|i| i["text"].as_str().unwrap_or_default().to_owned())
+            .map(|i| match i {
+                Value::String(s) => s.to_owned(),
+                Value::Object(o) => o["text"].as_str().unwrap_or_default().to_owned(),
+                _ => "".to_owned(),
+            })
             .collect();
         let ingredients = json["recipeIngredient"]
             .as_array()
