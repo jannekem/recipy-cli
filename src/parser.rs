@@ -21,10 +21,15 @@ pub fn parse_recipe(html: &str) -> Result<Recipe> {
     let selector = Selector::parse(r#"script[type="application/ld+json"]"#).unwrap();
 
     for element in document.select(&selector) {
-        let json_text = element.inner_html();
-        let json: Value = serde_json::from_str(&json_text)?;
+        let json: Value = serde_json::from_str(&element.inner_html())?;
         if json["@type"] == "Recipe" {
             return Recipe::from(&json);
+        }
+        if let Some(recipe) = json["@graph"]
+            .as_array()
+            .and_then(|g| g.iter().find(|e| e["@type"] == "Recipe"))
+        {
+            return Recipe::from(&recipe);
         }
     }
     Err(anyhow::anyhow!("No recipe found"))
