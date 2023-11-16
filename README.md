@@ -10,6 +10,8 @@ You can download the latest binary for your platform from the [releases page](ht
 
 Alternatively, you can build the binary from source by cloning this repository, installing Rust and running `cargo build --release` in the repository root. The binary will be located in `target/release` and can be moved to a location in your PATH.
 
+If you are using Linux, you can use the provided Makefile to build and install the binary to `/usr/local/bin` by running `make install`.
+
 ## Usage
 
 Run `recipy-cli --help` to see the available commands and options. The utility requires a Recipy site to be present in the current directory. Attempting to run the utility in a directory without the required directory structure will result in an error.
